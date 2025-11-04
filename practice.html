@@ -79,6 +79,7 @@
 
     <script>
         function reduceToSingleDigit(number) {
+
             const compound = number;
             while (number > 9) {
                 number = number.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
