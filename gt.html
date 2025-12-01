@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Numerology Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: #f4f4f9;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="date"] {
+            padding: 0.5rem;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            padding: 0.7rem 1.5rem;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .result {
+            margin-top: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Numerology Calculator</h2>
+        <label for="dob">Select your Date of Birth:</label>
+        <input type="date" id="dob" />
+        <button onclick="calculateNumerology()">Calculate</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function reduceToSingleDigit(number) {
+            const compound = number;
+            while (number > 9) {
+                number = number.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+            }
+            return { compound, singleDigit: number };
+        }
+
+        function calculateNumerology() {
+            const dob = document.getElementById("dob").value;
+            const resultDiv = document.getElementById("result");
+            if (!dob) {
+                resultDiv.innerHTML = "Please select a valid date.";
+                return;
+            }
+
+            const [year, month, day] = dob.split("-").map(Number);
+
+            // Basic Number: Sum of digits of the day only
+            const dayDigits = day.toString().split('').map(Number);
+            const basicSum = dayDigits.reduce((sum, digit) => sum + digit, 0);
+            const basicResult = reduceToSingleDigit(basicSum);
+
+            // Destiny Number: Sum of all digits of full DOB
+            const allDigits = [...dob.replace(/-/g, '')].map(Number);
+            const destinySum = allDigits.reduce((sum, digit) => sum + digit, 0);
+            const destinyResult = reduceToSingleDigit(destinySum);
+
+            resultDiv.innerHTML = `
+      <p><strong>Basic Number:</strong> ${basicResult.compound} → <span class="highlight">${basicResult.singleDigit}</span></p>
+      <p><strong>Destiny Number:</strong> ${destinyResult.compound} → <span class="highlight">${destinyResult.singleDigit}</span></p>
+    `;
+        }
+    </script>
+
+</body>
+
+</html>
